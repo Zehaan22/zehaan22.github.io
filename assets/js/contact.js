@@ -1,32 +1,36 @@
-document.getElementById("contactForm").addEventListener("submit", async function (event) {
-    event.preventDefault(); // Prevent the default form submission
+// Initialize EmailJS
+(function() {
+    emailjs.init("9oJmy0rt1dCRA-3Dw"); // Replace with your EmailJS public key
+})();
+
+const contactForm = document.getElementById("contactForm");
+
+contactForm.addEventListener("submit", function(event) {
+    event.preventDefault();
 
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value;
     const subject = document.getElementById("subject").value;
     const message = document.getElementById("message").value;
 
-    const successMessage = document.getElementById("successMessage");
-    const errorMessage = document.getElementById("errorMessage");
+    // Prepare the email parameters
+    const templateParams = {
+        name: name,
+        email: email,
+        subject: subject,
+        message: message,
+    };
 
-    try {
-        const response = await fetch("https://example.com/send-mail-endpoint", { // Replace with your mail API endpoint
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ name, email, subject, message }),
+    // Send the email
+    emailjs.send("service_q15ewl8", "template_6oefu7j", templateParams)
+        .then(function(response) {
+            console.log("SUCCESS!", response.status, response.text);
+            document.getElementById("successMessage").style.display = "block";
+            document.getElementById("errorMessage").style.display = "none";
+            contactForm.reset(); // Reset the form
+        }, function(error) {
+            console.log("FAILED...", error);
+            document.getElementById("successMessage").style.display = "none";
+            document.getElementById("errorMessage").style.display = "block";
         });
-
-        if (response.ok) {
-            successMessage.style.display = "block";
-            errorMessage.style.display = "none";
-            document.getElementById("contactForm").reset();
-        } else {
-            throw new Error("Failed to send message.");
-        }
-    } catch (error) {
-        successMessage.style.display = "none";
-        errorMessage.style.display = "block";
-    }
 });
