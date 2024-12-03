@@ -1,36 +1,24 @@
-// Initialize EmailJS
-(function() {
-    emailjs.init("9oJmy0rt1dCRA-3Dw"); // Replace with your EmailJS public key
-})();
+document.getElementById("contactForm").addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent the form's default submission behavior
 
-const contactForm = document.getElementById("contactForm");
+    const serviceID = "service_q15ewl8"; // Replace with your EmailJS Service ID
+    const templateID = "template_6oefu7j"; // Replace with your EmailJS Template ID
+    const publicKey = "9oJmy0rt1dCRA-3Dw"; // Replace with your EmailJS Public Key
 
-contactForm.addEventListener("submit", function(event) {
-    event.preventDefault();
+    // Initialize EmailJS
+    emailjs.init(publicKey);
 
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const subject = document.getElementById("subject").value;
-    const message = document.getElementById("message").value;
-
-    // Prepare the email parameters
-    const templateParams = {
-        name: name,
-        email: email,
-        subject: subject,
-        message: message,
-    };
-
-    // Send the email
-    emailjs.send("service_q15ewl8", "template_6oefu7j", templateParams)
-        .then(function(response) {
-            console.log("SUCCESS!", response.status, response.text);
-            document.getElementById("successMessage").style.display = "block";
-            document.getElementById("errorMessage").style.display = "none";
-            contactForm.reset(); // Reset the form
-        }, function(error) {
-            console.log("FAILED...", error);
-            document.getElementById("successMessage").style.display = "none";
-            document.getElementById("errorMessage").style.display = "block";
-        });
+    // Send form data
+    emailjs
+        .sendForm(serviceID, templateID, this)
+        .then(
+            () => {
+                alert("Message sent successfully!");
+                document.getElementById("contactForm").reset(); // Clear the form
+            },
+            (error) => {
+                alert("Failed to send message. Please try again.");
+                console.error("EmailJS Error:", error);
+            }
+        );
 });
