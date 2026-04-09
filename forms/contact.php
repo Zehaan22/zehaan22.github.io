@@ -1,22 +1,34 @@
 <?php
-// contact.php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = htmlspecialchars(trim($_POST['name']));
-    $email = htmlspecialchars(trim($_POST['email']));
-    $subject = htmlspecialchars(trim($_POST['subject']));
-    $message = htmlspecialchars(trim($_POST['message']));
 
-    $to = 'zehaan.naik@gmail.com'; // Replace with your email address
-    $headers = "From: $email\r\n" .
-               "Reply-To: $email\r\n" .
-               "X-Mailer: PHP/" . phpversion();
+    $name = trim($_POST['name']);
+    $email = trim($_POST['email']);
+    $subject = trim($_POST['subject']);
+    $message = trim($_POST['message']);
 
-    $email_body = "Name: $name\nEmail: $email\n\nMessage:\n$message";
+    // Basic validation
+    if (empty($name) || empty($email) || empty($message)) {
+        die("Please fill all required fields.");
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        die("Invalid email format.");
+    }
+
+    $to = 'zehaan.naik@gmail.com';
+
+    // Safe headers
+    $headers = "From: noreply@yourdomain.com\r\n";
+    $headers .= "Reply-To: $email\r\n";
+
+    $email_body = "Name: $name\n";
+    $email_body .= "Email: $email\n\n";
+    $email_body .= "Message:\n$message";
 
     if (mail($to, $subject, $email_body, $headers)) {
-        echo "<script>alert('Message sent successfully!');</script>";
+        echo "success";
     } else {
-        echo "<script>alert('Failed to send message. Please try again.');</script>";
+        echo "error";
     }
 }
 ?>

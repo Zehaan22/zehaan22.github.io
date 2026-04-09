@@ -501,6 +501,34 @@ h6 {
 }
 
 /*--------------------------------------------------------------
+# About Social Links (same as footer, slightly larger)
+--------------------------------------------------------------*/
+.about .social-links {
+  margin-top: 15px;
+}
+
+.about .social-links a {
+  font-size: 24px; /* slightly bigger than footer (16px) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-color);
+  color: var(--contrast-color);
+  line-height: 8;
+  margin: 0 20px; /* slightly more spacing */
+  border-radius: 50%;
+  text-align: center;
+  width: 62px;  /* bigger than footer (36px) */
+  height: 62px;
+  transition: 0.3s;
+}
+
+.about .social-links a:hover {
+  background: color-mix(in srgb, var(--accent-color), transparent 20%);
+  text-decoration: none;
+}
+
+/*--------------------------------------------------------------
 # Preloader
 --------------------------------------------------------------*/
 #preloader {
